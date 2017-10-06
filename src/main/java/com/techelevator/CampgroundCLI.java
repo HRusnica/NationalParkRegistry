@@ -42,6 +42,7 @@ public class CampgroundCLI {
 	
 	private static final String WHAT_SITE_RESERVED = "WHAT SITE SHOULD BE RESERVED (enter 0 to cancel)?";
 	private static final String WHAT_NAME_RESERVED = "WHAT NAME SHOULD THE RESERVATION BE UNDER?";
+	private static final String RESERVATION_NUMBER = "THE RESERVATION HAS BEEN MADE AND THE CONFIRMATION ID IS ";
 
 	private Menu menu;
 
@@ -114,6 +115,7 @@ public class CampgroundCLI {
 										String.format("%-20s", daoCG.getAllCampgrounds(choice.getParkId()).get(j).getCampgroundDailyFee()) + "\n");	
 							}
 							CampGround selectedCampGround = new CampGround();
+							//CampSite selectedSite = new CampSite();
 							LocalDate localDate1;
 							LocalDate localDate2;
 							Scanner input1 = new Scanner(System.in);
@@ -176,7 +178,7 @@ public class CampgroundCLI {
 								System.out.println(WHAT_SITE_RESERVED);
 								try{
 									int selectedSiteChoice = Integer.parseInt(input1.nextLine()); 
-									CampSite selectedCampSite = CSList.get(selectedSiteChoice - 1);
+									CampSite selectedSite = CSList.get(selectedSiteChoice - 1);
 									break;
 								}catch(NumberFormatException ex){
 									System.out.println("Not a valid number, try again");
@@ -188,13 +190,10 @@ public class CampgroundCLI {
 							}
 							while(true){
 								System.out.println(WHAT_NAME_RESERVED);
-								try{
 									String reserveName = input1.nextLine();
-									daoR.equals()
-								}
+									int reservationId = daoR.makeReservation(reserveName, selectedSite, localDate1, localDate2);
+									System.out.println(RESERVATION_NUMBER + reservationId);
 							}
-						
-
 						}	
 						if(choice3.equals(GO_BACK)){
 
