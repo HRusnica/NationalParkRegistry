@@ -7,7 +7,7 @@ public class CampSite {
 	private int campsiteNumber;
 	private int campsiteMaxOccupancy;
 	private boolean campsiteAccessible;
-	private int campsitMaxRVLength;
+	private int campsiteMaxRVLength;
 	private boolean campsiteUtilities;
 	public Long getCampsiteId() {
 		return campsiteId;
@@ -39,11 +39,11 @@ public class CampSite {
 	public void setCampsiteAccessible(boolean campsiteAccessible) {
 		this.campsiteAccessible = campsiteAccessible;
 	}
-	public int getCampsitMaxRVLength() {
-		return campsitMaxRVLength;
+	public int getCampsiteMaxRVLength() {
+		return campsiteMaxRVLength;
 	}
-	public void setCampsitMaxRVLength(int campsitMaxRVLength) {
-		this.campsitMaxRVLength = campsitMaxRVLength;
+	public void setCampsiteMaxRVLength(int campsitMaxRVLength) {
+		this.campsiteMaxRVLength = campsitMaxRVLength;
 	}
 	public boolean isCampsiteUtilities() {
 		return campsiteUtilities;

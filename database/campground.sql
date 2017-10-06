@@ -781,3 +781,6 @@ INSERT INTO reservation (site_id, name, from_date, to_date) VALUES (46, 'Scott F
 ALTER TABLE campground ADD FOREIGN KEY (park_id) REFERENCES park(park_id);
 ALTER TABLE site ADD FOREIGN KEY (campground_id) REFERENCES campground(campground_id);
 ALTER TABLE reservation ADD FOREIGN KEY (site_id) REFERENCES site(site_id);
+
+
+SELECT * FROM site s JOIN reservation r ON r.site_id = s.site_id WHERE s.campground_id = 1 AND r.site_id NOT IN (SELECT DISTINCT site_id FROM reservation WHERE (from_date BETWEEN '2017-09-20' AND '2017-09-30') OR (to_date BETWEEN '2017-09-20' AND '2017-09-30') OR (from_date < '2017-09-20' AND to_date > '2017-09-30')) 
