@@ -1,6 +1,8 @@
 package com.techelevator.JDBC;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -25,17 +27,11 @@ public class ParkJDBCDAO implements ParkDAO {
 		SqlRowSet parkRowSet = jdbcTemplate.queryForRowSet(searchAllParks);
 		List<Park> allParks = new ArrayList<>();
 		while(parkRowSet.next()){
-			Park tempPark = new Park();
-			tempPark = mapRowToPark(parkRowSet);
-			allParks.add(tempPark);
+			Park ourPark = new Park();
+			ourPark = mapRowToPark(parkRowSet);
+			allParks.add(ourPark);
 		}
 		return allParks;
-	}
-
-	@Override
-	public Park findParkByParkId() {
-		
-		return null;
 	}
 	
 	public Park mapRowToPark(SqlRowSet parkRowSet){
@@ -49,12 +45,16 @@ public class ParkJDBCDAO implements ParkDAO {
 		ourPark.setParkDescription(parkRowSet.getString("description"));
 		return ourPark;
 	}
-
+	
 	@Override
-	public String[] getStringFromParks() {
-		// TODO Auto-generated method stub
-		return null;
+	public Park createNewPark(String name, String location, Date theDate, int area, int visitors, String description){
+		Park newPark = new Park();
+		String sqlInsertPark = " INSERT INTO park (name, location, establish_date, area, visitors, description) VALUES (?, ?, ?, ?, ?, ?)";
+		jdbcTemplate.update(sqlInsertPark, name, location, theDate, area, visitors, description);
+		return newPark;
 	}
+
+	
 	
 
 }

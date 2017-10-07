@@ -1,5 +1,6 @@
 package com.techelevator.JDBC;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +24,13 @@ public class CampGroundJDBCDAO implements CampGroundDAO {
 
 	@Override
 	public List<CampGround> getAllCampgrounds(Long choice) {
-		String searchAllCampGrounds = "SELECT * FROM campground WHERE park_id = ?";
-		SqlRowSet campGroundRowSet = jdbcTemplate.queryForRowSet(searchAllCampGrounds, choice);
+		String searchAllCampGroundsByParkId = "SELECT * FROM campground WHERE park_id = ?";
+		SqlRowSet campGroundRowSet = jdbcTemplate.queryForRowSet(searchAllCampGroundsByParkId, choice);
 		List<CampGround> allCampGrounds = new ArrayList<>();
 		while(campGroundRowSet.next()){
-			CampGround tempCampGround = new CampGround();
-			tempCampGround = mapRowToCampGround(campGroundRowSet);
-			allCampGrounds.add(tempCampGround);
+			CampGround ourCampGround = new CampGround();
+			ourCampGround = mapRowToCampGround(campGroundRowSet);
+			allCampGrounds.add(ourCampGround);
 		}
 		return allCampGrounds;
 	}
@@ -48,11 +49,8 @@ public class CampGroundJDBCDAO implements CampGroundDAO {
 
 
 	@Override
-	public CampGround findCampGroundsByCampGroundId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	
+	public void makeCampGround(Long parkId, String name, String open, String close, BigDecimal fee) {
+		String sqlInsertCampGround = " INSERT INTO campground (park_id, name, open_from_mm, open_to_mm, daily_fee) VALUES (?, ?, ?, ?, ?) ";
+		jdbcTemplate.update(sqlInsertCampGround, parkId, name, open, close, fee);	
+	}	
 }

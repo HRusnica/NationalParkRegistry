@@ -16,14 +16,12 @@ import com.techelevator.CampSiteDAO;
 import com.techelevator.Park;
 
 public class CampSiteJDBCDAO implements CampSiteDAO {
-	
+
 	private JdbcTemplate jdbcTemplate;
-	
+
 	public CampSiteJDBCDAO(DataSource datasource) {
 		this.jdbcTemplate = new JdbcTemplate(datasource);
 	}
-
-
 
 	@Override
 	public List<CampSite> getCampSitesByUserInput(CampGround selectedCampGround, LocalDate localDate1,
@@ -42,16 +40,22 @@ public class CampSiteJDBCDAO implements CampSiteDAO {
 		return availableCampSites;
 	}
 
-	
+
 	public CampSite mapRowToCampSite(SqlRowSet campSiteRowSet){
-		CampSite ourSite = new CampSite();
-		ourSite.setCampsiteId(campSiteRowSet.getLong("site_id"));
-		ourSite.setCampgroundId(campSiteRowSet.getLong("campground_id"));
-		ourSite.setCampsiteNumber(campSiteRowSet.getInt("site_number"));
-		ourSite.setCampsiteMaxOccupancy(campSiteRowSet.getInt("max_occupancy"));
-		ourSite.setCampsiteAccessible(campSiteRowSet.getBoolean("accessible"));
-		ourSite.setCampsiteMaxRVLength(campSiteRowSet.getInt("max_rv_length"));
-		ourSite.setCampsiteUtilities(campSiteRowSet.getBoolean("utilities"));
-		return ourSite;
+		CampSite ourCampSite = new CampSite();
+		ourCampSite.setCampsiteId(campSiteRowSet.getLong("site_id"));
+		ourCampSite.setCampgroundId(campSiteRowSet.getLong("campground_id"));
+		ourCampSite.setCampsiteNumber(campSiteRowSet.getInt("site_number"));
+		ourCampSite.setCampsiteMaxOccupancy(campSiteRowSet.getInt("max_occupancy"));
+		ourCampSite.setCampsiteAccessible(campSiteRowSet.getBoolean("accessible"));
+		ourCampSite.setCampsiteMaxRVLength(campSiteRowSet.getInt("max_rv_length"));
+		ourCampSite.setCampsiteUtilities(campSiteRowSet.getBoolean("utilities"));
+		return ourCampSite;
+	}
+	
+	@Override
+	public void createNewCampSite(int campGroundId, int siteNumber, int maxOccupancy, Boolean accessible, int maxRVLength, Boolean utilities){
+		String sqlInsertCampSite = " INSERT INTO site (campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (?, ?, ?, ?, ?, ?)";
+		jdbcTemplate.update(sqlInsertCampSite, campGroundId, siteNumber, maxOccupancy, accessible, maxRVLength, utilities);
 	}
 }

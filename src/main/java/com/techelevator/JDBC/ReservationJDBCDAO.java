@@ -12,8 +12,8 @@ import com.techelevator.ReservationDAO;
 
 public class ReservationJDBCDAO implements ReservationDAO {
 
-private JdbcTemplate jdbcTemplate;
-	
+	private JdbcTemplate jdbcTemplate;
+
 	public ReservationJDBCDAO(DataSource datasource) {
 		this.jdbcTemplate = new JdbcTemplate(datasource);
 	}
@@ -23,6 +23,5 @@ private JdbcTemplate jdbcTemplate;
 		String sqlInsertReservation = "INSERT INTO reservation (site_id, name, from_date, to_date) VALUES (?,?,?,?) RETURNING reservation_id";
 		Long ourReservationId = jdbcTemplate.queryForObject(sqlInsertReservation, Long.class, selectedCampSite.getCampsiteId(), reserveName, localDate1, localDate2);		
 		return ourReservationId;
-	}
-	
+	}	
 }
