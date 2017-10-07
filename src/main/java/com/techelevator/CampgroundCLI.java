@@ -81,46 +81,31 @@ public class CampgroundCLI {
 		//produces first menu in which you select a park
 		while(true){
 
-			Park choice = (Park)menu.getChoiceFromOptions(daoP.getAllParks().toArray());
+			Park parkChoice = (Park)menu.getChoiceFromOptions(daoP.getAllParks().toArray());
 			//		System.out.println(QUIT);
 			for(int i = 0; i < daoP.getAllParks().size(); i++){
 				Long indexParkIdValue = daoP.getAllParks().get(i).getParkId();
 
-				if(indexParkIdValue.equals(choice.getParkId())){
+				if(indexParkIdValue.equals(parkChoice.getParkId())){
 					while(true){
 
 						//produces second (4 choice) menu where you can view park info, view campgrounds, book reservations and go back
 
-						String choice2 = (String)menu.getChoiceFromOptions(SECOND_MENU_OPTIONS);
+						String parkActionChoice = (String)menu.getChoiceFromOptions(SECOND_MENU_OPTIONS);
 
-						if(choice2.equals(VIEW_PARK_INFO)){
-							System.out.print(choice.getParkName() + "\n" 
-									+ String.format("%-20s", "Location: ") + choice.getParkLocation() + "\n" 
-									+ String.format("%-20s", "Established: ") + choice.getParkEstablishDate() + "\n" 
-									+ String.format("%-20s", "Area: ") + choice.getParkArea() + " Acres" + "\n" 
-									+ String.format("%-20s", "Annual Visitors: ") + choice.getParkVisitors() + "\n");
-						}
-						if(choice2.equals(VIEW_CAMPGROUNDS)){
-							System.out.println(String.format("%-50s", "Name") + String.format("%-20s", "Open") + String.format("%-20s", "Close") + String.format("%-20s", "Daily Fee")); 
-							for(int j = 0; j < daoCG.getAllCampgrounds(choice.getParkId()).size(); j++){
-								System.out.print(String.format(j+1 + ". " + "%-50s", daoCG.getAllCampgrounds(choice.getParkId()).get(j).getCampgroundName())  +
-										String.format("%-20s", daoCG.getAllCampgrounds(choice.getParkId()).get(j).getCampgroundOpenFromMonth()) +
-										String.format("%-20s", daoCG.getAllCampgrounds(choice.getParkId()).get(j).getCampgroundOpenToMonth()) +
-										String.format("%-20s", daoCG.getAllCampgrounds(choice.getParkId()).get(j).getCampgroundDailyFee()) + "\n");	
+						if(parkActionChoice.equals(VIEW_PARK_INFO)){
+							printParkInfo(parkChoice);
+							}
+						if(parkActionChoice.equals(VIEW_CAMPGROUNDS)){
+							printCampGrounds(parkChoice);
 							}
 
 							//this is menu if user chooses (view campgrounds)
 
-							String choice3 = (String)menu.getChoiceFromOptions(THIRD_MENU_OPTIONS);
+							String campgroundActionOption = (String)menu.getChoiceFromOptions(THIRD_MENU_OPTIONS);
 							//						while(true){
-							if(choice3.equals(SEARCH_RESERVATIONS)){
-								System.out.println("\n" + SEARCH_RESERVATIONS + "\n");
-								System.out.println(String.format("%-50s", "Name") + String.format("%-20s", "Open") + String.format("%-20s", "Close") + String.format("%-20s", "Daily Fee")); 
-								for(int j = 0; j < daoCG.getAllCampgrounds(choice.getParkId()).size(); j++){
-									System.out.print(j+1 + ". " + String.format("%-50s", daoCG.getAllCampgrounds(choice.getParkId()).get(j).getCampgroundName())  +
-											String.format("%-20s", daoCG.getAllCampgrounds(choice.getParkId()).get(j).getCampgroundOpenFromMonth()) +
-											String.format("%-20s", daoCG.getAllCampgrounds(choice.getParkId()).get(j).getCampgroundOpenToMonth()) +
-											String.format("%-20s", daoCG.getAllCampgrounds(choice.getParkId()).get(j).getCampgroundDailyFee()) + "\n");	
+							if(campgroundActionOption.equals(SEARCH_RESERVATIONS)){
+								printCampGroundsInPark(parkChoice);
 								}
 
 								// variables created outside if statements to be used in our select statement when we find campsites
@@ -136,18 +121,15 @@ public class CampgroundCLI {
 
 								while(true){
 									System.out.println("\n" + WHICH_CAMPGROUND);
-
 									try{
 										campgroundChoice = Integer.parseInt(input1.nextLine()); 
 										if(campgroundChoice == 0){
 											break;
-
 										}
 										else{
-											selectedCampGround = daoCG.getAllCampgrounds(choice.getParkId()).get(campgroundChoice - 1);
+											selectedCampGround = daoCG.getAllCampgrounds(parkChoice.getParkId()).get(campgroundChoice - 1);
 											break;
 										}
-
 									}catch(NumberFormatException ex){
 										System.out.println("Not a valid number, try again");
 									}catch(IndexOutOfBoundsException ex){
@@ -165,7 +147,6 @@ public class CampgroundCLI {
 									System.out.print("\n" + WHAT_ARRIVAL_DATE);
 									try {
 										String Arriveinput = input1.nextLine();
-
 										localDate1 =LocalDate.parse(Arriveinput);
 										break;	
 									} catch (Exception e) {
@@ -178,7 +159,6 @@ public class CampgroundCLI {
 									System.out.print(WHAT_DEPART_DATE);
 									try {
 										String departInput = input1.nextLine();
-
 										localDate2 =LocalDate.parse(departInput);
 										break;	
 										//Date arriveDate = menu.getDateFromUserInput(input);
@@ -232,22 +212,44 @@ public class CampgroundCLI {
 								break;
 
 							}
-
-
-
 						}
 						//break off 2nd menu when you choose Number 4 (GO BACK TO PREVIOUS SCREEN). Brings back to main menu
-						else{
+					
 							break;
 						}
 					}
 				}
-			}
-		}
+			
 
+	public void printParkInfo(Park parkChoice){
+		System.out.print(parkChoice.getParkName() + "\n" 
+				+ String.format("%-20s", "Location: ") + parkChoice.getParkLocation() + "\n" 
+				+ String.format("%-20s", "Established: ") + parkChoice.getParkEstablishDate() + "\n" 
+				+ String.format("%-20s", "Area: ") + parkChoice.getParkArea() + " Acres" + "\n" 
+				+ String.format("%-20s", "Annual Visitors: ") + parkChoice.getParkVisitors() + "\n");
 	}
-
-
+	
+	public void printCampGrounds(Park parkChoice){
+		System.out.println(String.format("%-50s", "Name") + String.format("%-20s", "Open") + String.format("%-20s", "Close") + String.format("%-20s", "Daily Fee")); 
+		for(int j = 0; j < daoCG.getAllCampgrounds(parkChoice.getParkId()).size(); j++){
+			System.out.print(String.format(j+1 + ". " + "%-50s", daoCG.getAllCampgrounds(parkChoice.getParkId()).get(j).getCampgroundName())  +
+					String.format("%-20s", daoCG.getAllCampgrounds(parkChoice.getParkId()).get(j).getCampgroundOpenFromMonth()) +
+					String.format("%-20s", daoCG.getAllCampgrounds(parkChoice.getParkId()).get(j).getCampgroundOpenToMonth()) +
+					String.format("%-20s", daoCG.getAllCampgrounds(parkChoice.getParkId()).get(j).getCampgroundDailyFee()) + "\n");
+	}
+	}
+	
+	public void printCampGroundsInPark(Park parkChoice){
+	System.out.println("\n" + SEARCH_RESERVATIONS + "\n");
+	System.out.println(String.format("%-50s", "Name") + String.format("%-20s", "Open") + String.format("%-20s", "Close") + String.format("%-20s", "Daily Fee")); 
+	for(int j = 0; j < daoCG.getAllCampgrounds(parkChoice.getParkId()).size(); j++){
+		System.out.print(j+1 + ". " + String.format("%-50s", daoCG.getAllCampgrounds(parkChoice.getParkId()).get(j).getCampgroundName())  +
+				String.format("%-20s", daoCG.getAllCampgrounds(parkChoice.getParkId()).get(j).getCampgroundOpenFromMonth()) +
+				String.format("%-20s", daoCG.getAllCampgrounds(parkChoice.getParkId()).get(j).getCampgroundOpenToMonth()) +
+				String.format("%-20s", daoCG.getAllCampgrounds(parkChoice.getParkId()).get(j).getCampgroundDailyFee()) + "\n");	
+	}
+	}
+	
 
 }
 
