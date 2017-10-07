@@ -18,10 +18,10 @@ private JdbcTemplate jdbcTemplate;
 		this.jdbcTemplate = new JdbcTemplate(datasource);
 	}
 
-	public int makeReservation(String reserveName, CampSite selectedCampSite, LocalDate localDate1, LocalDate localDate2){
-		String siteId = Long.toString(selectedCampSite.getCampsiteId());
+	public Long makeReservation(String reserveName, CampSite selectedCampSite, LocalDate localDate1, LocalDate localDate2){
+		//String siteId = Long.toString(selectedCampSite.getCampsiteId());
 		String sqlInsertReservation = "INSERT INTO reservation (site_id, name, from_date, to_date) VALUES (?,?,?,?) RETURNING reservation_id";
-		int ourReservationId = jdbcTemplate.update(sqlInsertReservation, siteId, reserveName, localDate1, localDate2);		
+		Long ourReservationId = jdbcTemplate.queryForObject(sqlInsertReservation, Long.class, selectedCampSite.getCampsiteId(), reserveName, localDate1, localDate2);		
 		return ourReservationId;
 	}
 	
