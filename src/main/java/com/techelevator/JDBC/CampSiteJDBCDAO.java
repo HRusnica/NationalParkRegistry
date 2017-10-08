@@ -58,4 +58,20 @@ public class CampSiteJDBCDAO implements CampSiteDAO {
 		String sqlInsertCampSite = " INSERT INTO site (campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (?, ?, ?, ?, ?, ?)";
 		jdbcTemplate.update(sqlInsertCampSite, campGroundId, siteNumber, maxOccupancy, accessible, maxRVLength, utilities);
 	}
+
+	@Override
+	public List<CampSite> getCampSitesWithNoCGSelection(LocalDate localDate1, LocalDate localDate2) {
+		String selectSites = "SELECT * FROM site "
+				+ "WHERE campground_id = ? AND site_id NOT IN (SELECT DISTINCT site_id FROM reservation "
+				+ "WHERE (from_date BETWEEN ? AND ?) OR (to_date BETWEEN ? AND ?) OR "
+				+ "(from_date < ? AND to_date > ?)) LIMIT 5";
+		SqlRowSet campSiteRowSet = jdbcTemplate.queryForRowSet(selectSites, localDate1, localDate2, localDate1, localDate2, localDate1, localDate2);
+		List<CampSite> availableCampSites= new ArrayList<>();
+		while(campSiteRowSet.next()){
+			CampSite ourCampSite = new CampSite();
+			ourCampSite = mapRowToCampSite(campSiteRowSet);
+			availableCampSites.add(ourCampSite);
+		}
+		return availableCampSites;
+	}
 }
