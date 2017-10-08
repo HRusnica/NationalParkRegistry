@@ -25,11 +25,11 @@ public class CampgroundCLI {
 
 	private static final String VIEW_PARK_INFO = "VIEW PARK INFORMATION";
 	private static final String VIEW_CAMPGROUNDS = "VIEW CAMPGROUNDS";
-	private static final String BOOK_RESERVATIONS = "BOOK RESERVATIONS";
+	//private static final String BOOK_RESERVATIONS = "BOOK RESERVATIONS";
 	private static final String GO_BACK = "GO BACK TO PREVIOUS SCREEN";
 	private static final String[] SECOND_MENU_OPTIONS = {VIEW_PARK_INFO, 
 			VIEW_CAMPGROUNDS,
-			BOOK_RESERVATIONS,
+		//	BOOK_RESERVATIONS,
 			GO_BACK
 	};
 	private static final String SEARCH_RESERVATIONS = "SEARCH FOR AVAILABLE RESERVATION";
@@ -105,38 +105,38 @@ public class CampgroundCLI {
 				if(parkActionChoice.equals(VIEW_CAMPGROUNDS)){
 					printCampGrounds(parkChoice);
 				}
-				if(parkActionChoice.equals(BOOK_RESERVATIONS)){
-					while(true){ 
-						System.out.print("\n" + WHAT_ARRIVAL_DATE);
-						try {
-							String Arriveinput = input1.nextLine();
-							localDate1 =LocalDate.parse(Arriveinput);
-							break;	
-						} catch (Exception e) {
-							System.out.println("Invalid Date, please try again...");
-						}
+//				if(parkActionChoice.equals(BOOK_RESERVATIONS)){
+//					while(true){ 
+//						System.out.print("\n" + WHAT_ARRIVAL_DATE);
+//						try {
+//							String Arriveinput = input1.nextLine();
+//							localDate1 =LocalDate.parse(Arriveinput);
+//							break;	
+//						} catch (Exception e) {
+//							System.out.println("Invalid Date, please try again...");
+//						}
+//
+//					}
+//
+//					while(true){
+//						System.out.print(WHAT_DEPART_DATE);
+//						try {
+//							String departInput = input1.nextLine();
+//							localDate2 =LocalDate.parse(departInput);
+//							break;	
+//							//Date arriveDate = menu.getDateFromUserInput(input);
+//						} catch (Exception e) {
+//							System.out.println("Invalid Date, please try again...");
+//						}
+//					}
 
-					}
-
-					while(true){
-						System.out.print(WHAT_DEPART_DATE);
-						try {
-							String departInput = input1.nextLine();
-							localDate2 =LocalDate.parse(departInput);
-							break;	
-							//Date arriveDate = menu.getDateFromUserInput(input);
-						} catch (Exception e) {
-							System.out.println("Invalid Date, please try again...");
-						}
-					}
-
-					List<CampSite> CSListO = daoCS.getCampSitesByUserInput(selectedCampGround, localDate1, localDate2);
-					while(true){
-						printCampSitesAvailableDuringDateRange(selectedCampGround, CSListO, localDate1, localDate2);
-						break;
-					}
+//					List<CampSite> CSListO = daoCS.getCampSitesByUserInput(selectedCampGround, localDate1, localDate2);
+//					while(true){
+//						printCampSitesAvailableDuringDateRange(selectedCampGround, CSListO, localDate1, localDate2);
+//						break;
+//					}
 					//printCampSitesAvailableDuringDateRange()
-				}
+			//	}
 
 				//this is menu if user chooses (view campgrounds)
 				while(true){
